@@ -1,0 +1,23 @@
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import morgan from 'morgan';
+import authRoutes from './modules/auth/auth.routes.js';
+import usersRoutes from './modules/users/users.routes.js';
+import recordsRoutes from './modules/records/records.routes.js';
+import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+dotenv.config();
+const app=express();
+app.use(cors());
+app.use(morgan('dev'));
+app.use(express.json());
+app.get('/api/health',(req,res)=>res.json({success:true,data:{status:'ok'}}));
+app.use('/api/auth',authRoutes);
+app.use('/api/users',usersRoutes);
+app.use('/api/records',recordsRoutes);
+app.use('/api/dashboard',dashboardRoutes);
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+export default app;

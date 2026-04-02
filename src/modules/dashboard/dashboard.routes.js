@@ -1,0 +1,1 @@
+import { Router } from 'express';import { authenticate } from '../../middleware/auth.js';import { byCategory, recent, summary, trend } from './dashboard.controller.js';const r=Router();r.use(authenticate);r.get('/summary',summary);r.get('/by-category',byCategory);r.get('/trend',trend);r.get('/recent',recent);export default r;

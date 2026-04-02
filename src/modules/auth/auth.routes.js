@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
+import { authenticate } from '../../middleware/auth.js';
+import { roleGuard } from '../../middleware/roleGuard.js';
+import { login, logout, me, register, registerOpen } from './auth.controller.js';
+const r = Router();
+const lim = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+r.post('/register', lim, authenticate, roleGuard(['ADMIN']), register);
+r.post('/register/open', lim, registerOpen);
+r.post('/login', lim, login);
+r.post('/logout', authenticate, logout);
+r.get('/me', authenticate, me);
+export default r;
